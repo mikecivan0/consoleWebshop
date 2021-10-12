@@ -13,28 +13,28 @@ public abstract class BaseController<T> {
     protected T entity;
 
     public abstract List<T> read();
-    protected abstract void createControll() throws BaseException;
-    protected abstract void updateControll() throws BaseException;
-    protected abstract void deleteControll() throws BaseException;
+    protected abstract void createControl() throws BaseException;
+    protected abstract void updateControl() throws BaseException;
+    protected abstract void deleteControl() throws BaseException;
 
     public BaseController() throws BaseException {
         this.session = HibernateUtil.getSession();
     }
 
     public T create() throws BaseException{
-        createControll();
+        createControl();
         save();
         return entity;
     }
 
     public T update() throws BaseException{
-        updateControll();
+        updateControl();
         save();
         return entity;
     }
 
     public void delete() throws BaseException{
-        deleteControll();
+        deleteControl();
         session.beginTransaction();
         session.delete(entity);
         session.getTransaction().commit();
