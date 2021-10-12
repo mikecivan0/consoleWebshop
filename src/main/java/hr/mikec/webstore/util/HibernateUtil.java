@@ -1,5 +1,6 @@
 package hr.mikec.webstore.util;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -7,11 +8,14 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class HibernateUtil {
-    private static StandardServiceRegistry registry;
-    private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+    private static StandardServiceRegistry registry;
+    private static Session session;
+    // factory principle
+
+    public static Session getSession() throws BaseException {
+        if (session == null) {
+
             try {
                 // Create registry
                 registry = new StandardServiceRegistryBuilder().configure().build();
@@ -23,16 +27,17 @@ public class HibernateUtil {
                 Metadata metadata = sources.getMetadataBuilder().build();
 
                 // Create SessionFactory
-                sessionFactory = metadata.getSessionFactoryBuilder().build();
+                SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
+                session=sessionFactory.openSession();
             } catch (Exception e) {
-                e.printStackTrace();
                 if (registry != null) {
                     StandardServiceRegistryBuilder.destroy(registry);
                 }
+                throw new BaseException(e.getMessage());
             }
         }
-        return sessionFactory;
+        return session;
     }
 
     public static void shutdown() {
@@ -40,4 +45,5 @@ public class HibernateUtil {
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
+
 }
