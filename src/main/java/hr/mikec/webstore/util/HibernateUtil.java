@@ -11,11 +11,9 @@ public class HibernateUtil {
 
     private static StandardServiceRegistry registry;
     private static Session session;
-    // factory principle
 
-    public static Session getSession() throws BaseException {
+    public static Session getSession() {
         if (session == null) {
-
             try {
                 // Create registry
                 registry = new StandardServiceRegistryBuilder().configure().build();
@@ -28,13 +26,12 @@ public class HibernateUtil {
 
                 // Create SessionFactory
                 SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
-
                 session=sessionFactory.openSession();
             } catch (Exception e) {
+                e.printStackTrace();
                 if (registry != null) {
                     StandardServiceRegistryBuilder.destroy(registry);
                 }
-                throw new BaseException(e.getMessage());
             }
         }
         return session;
