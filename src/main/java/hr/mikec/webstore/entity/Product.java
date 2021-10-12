@@ -1,4 +1,4 @@
-package hr.mikec.webstore.model;
+package hr.mikec.webstore.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public class Product {
 
     public Product() {
+
     }
 
     public Product(String name, int sku, int quantity, BigDecimal price) {
@@ -18,7 +19,6 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column()
     private Long id;
 
     @Column(nullable = false)
@@ -73,6 +73,9 @@ public class Product {
         this.price = price;
     }
 
-    toString
-
+    @Override
+    public String toString() {
+        return sku + ", " +  name + ", " +
+                quantity + " pcs, " + price;
+    }
 }
