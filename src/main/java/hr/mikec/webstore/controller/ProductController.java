@@ -45,7 +45,11 @@ public class ProductController extends BaseController<Product>{
         String text = "";
         try {
             Method method = Product.class.getDeclaredMethod("get" + variable, null);
-            text = (String) method.invoke(entity, null);
+            try {
+                text = (String) method.invoke(entity, null);
+            }catch (Exception e){
+                text = String.valueOf(method.invoke(entity, null));
+            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
