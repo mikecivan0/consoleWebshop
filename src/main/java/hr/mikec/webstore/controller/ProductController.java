@@ -28,14 +28,6 @@ public class ProductController extends BaseController<Product>{
 
     @Override
     protected void updateControl() throws BaseException {
-        notEmptyControl("Name");
-        notEmptyControl("Sku");
-        notEmptyControl("Quantity");
-        notEmptyControl("Price");
-        updateExistsControl();
-        if(entity.getId()<3){
-            throw new BaseException("This label is not allowed to modify");
-        }
     }
 
     @Override
@@ -68,19 +60,6 @@ public class ProductController extends BaseController<Product>{
                 .uniqueResult();
         if(productSkuExists!=0){
             throw new BaseException("Product with same sku already exists in database");
-        }
-    }
-
-    private void updateExistsControl() throws BaseException{
-        Long productExists = (Long) session.createQuery(
-                        "SELECT COUNT(id) FROM Product WHERE "
-                                + "sku=:sku "
-                                + "AND id!=:id")
-                .setParameter("sku", entity.getSku())
-                .setParameter("id", entity.getId())
-                .uniqueResult();
-        if(productExists!=0){
-            throw new BaseException("Product with same sku already exists ina database");
         }
     }
 }
