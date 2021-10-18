@@ -42,17 +42,13 @@ public class Tools {
         return number;
     }
 
-    public static String parseString(String message, String errorMessage, int minLength) {
+    public static String parseString(String message, String errorMessage) throws BaseException {
         String str = "";
         while (true) {
             System.out.print(message);
             str = scanner.nextLine();
             if (str.trim().equals("")) {
-                System.out.println(errorMessage);
-            }
-            if (str.length() < minLength) {
-                System.out.println("Enter at least " + minLength + " characters");
-                continue;
+                throw new BaseException(errorMessage);
             }
             break;
         }

@@ -63,8 +63,17 @@ public class ProductController extends BaseController<Product>{
                 .setParameter("sku", entity.getSku())
                 .uniqueResult();
         if(productSkuExists!=0){
-            throw new BaseException("Product with same sku already exists in database");
+            throw new BaseException("Exists");
         }
+    }
+
+    public Product findBySku() throws BaseException{
+        Product product = (Product) session.createQuery(
+                        "FROM Product WHERE "
+                                + "sku=:sku")
+                .setParameter("sku", entity.getSku())
+                .getSingleResult();
+        return product;
     }
 }
 
