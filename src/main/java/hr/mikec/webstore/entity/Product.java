@@ -1,6 +1,7 @@
 package hr.mikec.webstore.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(name = "products")
@@ -75,7 +76,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return sku + ", " +  name + ", " +
-                quantity + " pcs, " + price;
+        return "SKU: " + sku + ", name: " +  name + ", quantity: " +
+                quantity + ", price: " + price.setScale(2, RoundingMode.CEILING);
     }
 }

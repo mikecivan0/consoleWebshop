@@ -2,15 +2,16 @@ package hr.mikec.webstore.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
-public class ShopingCart {
+public class ShoppingCart {
 
-    public ShopingCart() {
+    public ShoppingCart() {
 
     }
 
-    public ShopingCart(Product product, BigDecimal quantity) {
+    public ShoppingCart(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -23,7 +24,7 @@ public class ShopingCart {
     private Product product;
 
     @Column(nullable = false)
-    private BigDecimal quantity;
+    private int quantity;
 
     public Long getId() {
         return id;
@@ -41,21 +42,22 @@ public class ShopingCart {
         this.product = product;
     }
 
-    public BigDecimal getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     @Override
     public String toString() {
-        final String s = product.getSku() + ", " +
-                product.getName() + ", " +
-                product.getPrice() + ", " +
+        final String s = "SKU: " + product.getSku() + ", product: " +
+                product.getName() + ", piece price: " +
+                product.getPrice().setScale(2, RoundingMode.CEILING) + ", quantity: " +
                 quantity + ", " +
-                "total: " + quantity.multiply(product.getPrice());
+                "total amount for this product: " +
+                product.getPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.CEILING);
         return s;
     }
 }
