@@ -27,6 +27,8 @@ public class ShoppingCartController extends BaseController<ShoppingCart>{
 
     @Override
     protected void updateControl() throws BaseException {
+        notNegativeSkuControll();
+        notNegativeQuantityControll();
         updateExistsControl();
     }
 

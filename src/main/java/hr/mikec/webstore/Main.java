@@ -58,6 +58,7 @@ public class Main {
 			processProductCommand(command);
 		} catch (BaseException e){
 			System.out.println(e.getMessage());
+			addProductToInventory();
 		}
 	}
 
@@ -111,8 +112,8 @@ public class Main {
 			String product = productController.getEntity().getName();
 			Integer quantity =  productController.getEntity().getQuantity();
 			System.out.println("Product with same SKU already exists." +
-					"\nDo you want increase quantity of " + product + " by " + quantity + "?");
-			if(Tools.parseYesNo("Enter yes od no: ", "You can enter only yes or no")){
+					"\nDo you want increase quantity of " + product + " by " + quantity + "? (y/n): ");
+			if(Tools.parseYesNo("Enter Y/YES or N/NO: ", "Allowed answers are Y or YES, and N or NO")){
 				try {
 					Product p = productController.findBySku(productController.getEntity().getSku());
 					p.setQuantity(p.getQuantity()+quantity);
@@ -169,8 +170,8 @@ public class Main {
 			String product = shoppingCartController.getEntity().getProduct().getName();
 			Integer quantity =  shoppingCartController.getEntity().getQuantity();
 			System.out.println("Product with same SKU already exists in your shopping cart." +
-					"\nDo you want increase quantity of " + product + " by " + quantity + "?");
-			if(Tools.parseYesNo("Enter yes od no: ", "You can enter only yes or no")){
+					"\nDo you want increase quantity of " + product + " by " + quantity + "? (y/n): ");
+			if(Tools.parseYesNo("Enter Y/YES or N/NO: ", "Allowed answers are Y or YES, and N or NO")){
 				try {
 					ShoppingCart sc = shoppingCartController.findBySku(shoppingCartController.getEntity().getProduct().getSku());
 					sc.setQuantity(sc.getQuantity()+quantity);
@@ -202,8 +203,8 @@ public class Main {
 	}
 
 	private void updateCart() {
-		if(Tools.parseYesNo("Increase quantity of product " + product.getName() + " in cart by " + quantity + "?: " ,
-				"Allowed answers are YES and NO")){
+		if(Tools.parseYesNo("Increase quantity of product " + product.getName() + " in cart by " + quantity + "? (y/n): " ,
+				"Allowed answers are Y or YES, and N or NO")){
 			ShoppingCart sc = new ShoppingCart();
 			try {
 				sc = shoppingCartController.findByProduct(product);
@@ -343,6 +344,14 @@ public class Main {
                 proceed = false;
             }
         }
+		if(proceed){
+			try {
+				product = productController.findBySku(sku);
+			} catch (BaseException e) {
+				System.out.println(e.getMessage());
+				proceed = false;
+			}
+		}
         return proceed;
     }
 

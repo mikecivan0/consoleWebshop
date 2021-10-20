@@ -60,10 +60,10 @@ public class Tools {
         while (true) {
             System.out.print(message);
             str = scanner.nextLine().trim().toLowerCase();
-            if (str.equals("yes")) {
+            if (str.equals("y") || str.equals("yes")) {
                 return true;
             }
-            if (str.equals("no")) {
+            if (str.equals("n") || str.equals("no")) {
                 return false;
             }
             System.out.println(errorMessage);
