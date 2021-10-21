@@ -60,4 +60,12 @@ public class ShoppingCart {
                 product.getPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.CEILING);
         return s;
     }
+
+    public String checkout() {
+        final String s = quantity + "X " +
+                product.getName() + " (" +
+                product.getPrice().setScale(2, RoundingMode.CEILING) + ") = " +
+                product.getPrice().multiply(BigDecimal.valueOf(quantity)).setScale(2, RoundingMode.CEILING);
+        return s;
+    }
 }

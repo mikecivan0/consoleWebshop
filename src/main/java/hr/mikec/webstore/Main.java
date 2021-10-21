@@ -6,6 +6,7 @@ import hr.mikec.webstore.util.BaseException;
 import hr.mikec.webstore.util.Tools;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Scanner;
 
@@ -278,7 +279,20 @@ public class Main {
 	}
 
 	private void shoppingCartCheckout() {
+        BigDecimal sum = BigDecimal.valueOf(0);
+        for(ShoppingCart sc : shoppingCartController.read()){
+            System.out.println(sc.checkout());
+			BigDecimal totalForProduct = sc.getProduct().getPrice().multiply(BigDecimal.valueOf(sc.getQuantity()));
+			sum = sum.add(totalForProduct);
+        }
+		System.out.println("\nTOTAL: " + sum.setScale(2, RoundingMode.CEILING));
+		clearShoppingCart();
 	}
+	private void clearShoppingCart() {
+		shoppingCartController.truncate();
+		editShoppingCart();
+	}
+
 	private void shoppingCartEnd() {
 	}
 

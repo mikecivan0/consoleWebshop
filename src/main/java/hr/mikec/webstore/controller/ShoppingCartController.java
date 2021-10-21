@@ -91,5 +91,12 @@ public class ShoppingCartController extends BaseController<ShoppingCart>{
         }
         return shoppingCart;
     }
+
+    public void truncate(){
+        session.beginTransaction();
+        session.createSQLQuery("TRUNCATE TABLE shoppingCart").executeUpdate();
+        session.getTransaction().commit();
+    }
+
 }
 
