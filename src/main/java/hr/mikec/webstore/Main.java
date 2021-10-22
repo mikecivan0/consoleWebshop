@@ -294,6 +294,8 @@ public class Main {
 	}
 
 	private void shoppingCartEnd() {
+        System.out.println("Until next time :)");
+        System.exit(0);
 	}
 
 	private void showShoppingCart() {
