@@ -1,16 +1,17 @@
 package hr.mikec.webstore.controller;
 
 import hr.mikec.webstore.entity.Product;
+import hr.mikec.webstore.controller.ProductController;
 import hr.mikec.webstore.entity.ShoppingCart;
 import hr.mikec.webstore.util.BaseException;
-
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class ShoppingCartController extends BaseController<ShoppingCart>{
 
+    private ProductController productController;
     public ShoppingCartController() throws BaseException {
         super();
+        productController = new ProductController();
     }
 
     @Override
@@ -20,15 +21,17 @@ public class ShoppingCartController extends BaseController<ShoppingCart>{
 
     @Override
     protected void createControl() throws BaseException {
-        notNegativeSkuControll();
-        notNegativeQuantityControll();
+        notNegativeSkuControl();
+        notNegativeQuantityControl();
+        notEnoughProductsOnStockControl();
         createExistsControl();
     }
 
     @Override
     protected void updateControl() throws BaseException {
-        notNegativeSkuControll();
-        notNegativeQuantityControll();
+        notNegativeSkuControl();
+        notNegativeQuantityControl();
+        notEnoughProductsOnStockUpdateControl();
         updateExistsControl();
     }
 
@@ -48,13 +51,29 @@ public class ShoppingCartController extends BaseController<ShoppingCart>{
         }
     }
 
-    private void notNegativeSkuControll() throws BaseException{
+    private void notNegativeSkuControl() throws BaseException{
         if(entity.getProduct().getSku()<1){
             throw new BaseException("SKU must be greater than 0");
         }
     }
 
-    private void notNegativeQuantityControll() throws BaseException{
+    private void notEnoughProductsOnStockControl() throws BaseException{
+        int productsOnStock = productController.findBySku(entity.getProduct().getSku()).getQuantity();
+        if(entity.getQuantity()>productsOnStock){
+            throw new BaseException("Not enough product items on stock");
+        }
+    }
+
+    private void notEnoughProductsOnStockUpdateControl() throws BaseException{
+        int productsOnStock = productController.findBySku(entity.getProduct().getSku()).getQuantity();
+        int currentInShoppingCart = findBySku(entity.getProduct().getSku()).getQuantity();
+        int needToAdd = entity.getQuantity()-currentInShoppingCart;
+        if(needToAdd>productsOnStock){
+            throw new BaseException("Not enough product items on stock");
+        }
+    }
+
+    private void notNegativeQuantityControl() throws BaseException{
         if(entity.getQuantity()<1){
             throw new BaseException("Quantity must be greater than 0");
         }

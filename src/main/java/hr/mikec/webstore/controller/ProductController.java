@@ -24,16 +24,16 @@ public class ProductController extends BaseController<Product>{
         notEmptyControl("Sku");
         notEmptyControl("Quantity");
         notEmptyControl("Price");
-        notNegativeSkuControll();
-        notNegativeQuantityControll();
-        notNegativePriceControll();
+        notNegativeSkuControl();
+        notNegativeQuantityControl();
+        notNegativePriceControl();
         createExistsControl();
     }
 
     @Override
     protected void updateControl() throws BaseException {
-        notNegativeSkuControll();
-        notNegativeQuantityControll();
+        notNegativeSkuControl();
+        notNegativeQuantityControl();
     }
 
     @Override
@@ -61,19 +61,19 @@ public class ProductController extends BaseController<Product>{
         return text;
     }
 
-    private void notNegativeSkuControll() throws BaseException{
+    private void notNegativeSkuControl() throws BaseException{
         if(entity.getSku()<1){
             throw new BaseException("SKU must be greater than 0");
         }
     }
 
-    private void notNegativeQuantityControll() throws BaseException{
+    private void notNegativeQuantityControl() throws BaseException{
         if(entity.getQuantity()<1){
             throw new BaseException("Quantity must be greater than 0");
         }
     }
 
-    private void notNegativePriceControll() throws BaseException{
+    private void notNegativePriceControl() throws BaseException{
         if(entity.getPrice().compareTo(new BigDecimal(0))<1){
             throw new BaseException("Price must be greater than 0");
         }
